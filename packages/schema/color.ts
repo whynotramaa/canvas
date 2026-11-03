@@ -16,3 +16,4 @@ export function displayStroke(value:string|undefined,dark=false):string{
 export function displayFill(value:string|undefined,dark=false):string|undefined{
  const channels=value?rgb(value):null;return dark&&channels&&luminance(channels)>.3?hex(channels.map((c,i)=>c*.25+[25,25,29][i]!*.75)):value;
 }
+export function displayBrand(value:string,dark=false):string{const channels=rgb(value);return dark&&channels&&luminance(channels)<.04?'#ececec':value;}

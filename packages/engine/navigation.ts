@@ -1,7 +1,7 @@
 import {bounds} from './geometry';
 import type { SceneElement } from '../schema';
 export const backdrops=['plain','dots','lines','graph','isometric','notebook','blueprint','chalkboard','kraft','warm','grain','vignette'] as const;
-export interface CanvasSettings {clean?:boolean;backdrop:typeof backdrops[number];gridSize:number;opacity:number;snapping:boolean;gridSnap:boolean}
+export interface CanvasSettings {clean?:boolean;background?:string;backdrop:typeof backdrops[number];gridSize:number;opacity:number;snapping:boolean;gridSnap:boolean}
 export const defaultSettings:CanvasSettings={backdrop:'plain',gridSize:24,opacity:.18,snapping:true,gridSnap:false};
 export interface SnapGuide {axis:'x'|'y';value:number;kind?:'align'|'spacing'}
 export function snapPosition(x:number,y:number,width:number,height:number,elements:SceneElement[],settings:CanvasSettings,tolerance=8){

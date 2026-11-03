@@ -64,7 +64,7 @@ export function validateWorkspace(value: unknown): Workspace {
     ancestors(w, e.id);
     if (e.kind === 'drawing') {
       const drawing = w.drawings[e.id]; parseDrawing(drawing);
-      if(drawing.settings){const s=drawing.settings;if(s.clean!==undefined&&typeof s.clean!=='boolean')throw new Error('Invalid drawing clean mode');if(!backdrops.includes(s.backdrop)||!Number.isFinite(s.gridSize)||s.gridSize<4||s.gridSize>200||!Number.isFinite(s.opacity)||s.opacity<0||s.opacity>1||typeof s.snapping!=='boolean'||typeof s.gridSnap!=='boolean')throw new Error('Invalid canvas settings');}
+      if(drawing.settings){const s=drawing.settings;if(s.clean!==undefined&&typeof s.clean!=='boolean')throw new Error('Invalid drawing clean mode');if(s.background!==undefined&&(typeof s.background!=='string'||!/^#[0-9a-f]{6}$/i.test(s.background)))throw new Error('Invalid canvas background');if(!backdrops.includes(s.backdrop)||!Number.isFinite(s.gridSize)||s.gridSize<4||s.gridSize>200||!Number.isFinite(s.opacity)||s.opacity<0||s.opacity>1||typeof s.snapping!=='boolean'||typeof s.gridSnap!=='boolean')throw new Error('Invalid canvas settings');}
       if (drawing.source !== undefined && typeof drawing.source !== 'string') throw new Error('Invalid diagram source');
       if (drawing.snapshots !== undefined) { if (!Array.isArray(drawing.snapshots)) throw new Error('Invalid snapshots'); for (const snapshot of drawing.snapshots) { if (typeof snapshot.id !== 'string' || typeof snapshot.name !== 'string' || !Number.isFinite(snapshot.created)) throw new Error('Invalid snapshot'); parseDrawing({ version: 1, elements: snapshot.elements }); } }
       validateHistory(drawing.history);

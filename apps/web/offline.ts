@@ -3,9 +3,9 @@ export const manifest = {
   start_url: '/', display: 'standalone', background_color: '#f6f4ee', theme_color: '#f6f4ee',
   icons: [{ src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
 };
-export const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#f6f4ee"/><rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#1f1e1b" stroke-width="2"/><path d="M14 43c6-1 9-9 14-16s11-11 15-8-1 11-7 15-9 5-8 8 9 0 14-4 6-2 6 1" fill="none" stroke="#1f1e1b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="18" r="6" fill="#f2b4ab" stroke="#1f1e1b" stroke-width="2"/></svg>`;
+export const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="15" fill="#1f1e1b"/><rect x="10" y="11" width="24" height="17" rx="4.5" fill="#f6f4ee"/><circle cx="44" cy="44" r="9.5" fill="#f2b4ab"/><path d="M22 28.5c0 10 3 15.5 10 15.5" fill="none" stroke="#f6f4ee" stroke-width="4" stroke-linecap="round"/><path d="M27 38.5l5.5 5.5-5.5 5.5" fill="none" stroke="#f6f4ee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 export const serviceWorker = String.raw`
-const CACHE = 'canvas-shell-v3';
+const CACHE = 'canvas-shell-v4';
 self.addEventListener('install', event => event.waitUntil((async () => {
   const cache = await caches.open(CACHE);
   const response = await fetch('/', { cache: 'reload' });

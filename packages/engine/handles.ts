@@ -1,8 +1,8 @@
 import type{SceneElement}from'../schema';
 import{selectionBounds,rotatePoint,type Bounds}from'./geometry';
 import{refreshBindings}from'./connectors';
-export type Handle='nw'|'ne'|'se'|'sw'|'rotate';
-export function selectionHandles(elements:SceneElement[],ids:Set<string>,zoom:number):{handle:Handle;x:number;y:number}[]{ids=new Set(elements.filter(e=>ids.has(e.id)&&!e.locked&&!e.hidden).map(e=>e.id));const b=selectionBounds(elements,ids);if(!b)return[];return[{handle:'nw',x:b.minX,y:b.minY},{handle:'ne',x:b.maxX,y:b.minY},{handle:'se',x:b.maxX,y:b.maxY},{handle:'sw',x:b.minX,y:b.maxY},{handle:'rotate',x:(b.minX+b.maxX)/2,y:b.minY-28/zoom}];}
+export type Handle='nw'|'n'|'ne'|'e'|'se'|'s'|'sw'|'w'|'rotate';
+export function selectionHandles(elements:SceneElement[],ids:Set<string>,zoom:number):{handle:Handle;x:number;y:number}[]{ids=new Set(elements.filter(e=>ids.has(e.id)&&!e.locked&&!e.hidden).map(e=>e.id));const b=selectionBounds(elements,ids);if(!b)return[];const cx=(b.minX+b.maxX)/2,cy=(b.minY+b.maxY)/2,edges=(b.maxX-b.minX)*zoom>40&&(b.maxY-b.minY)*zoom>40;return[{handle:'rotate',x:cx,y:b.minY-28/zoom},...(edges?[{handle:'n'as const,x:cx,y:b.minY},{handle:'e'as const,x:b.maxX,y:cy},{handle:'s'as const,x:cx,y:b.maxY},{handle:'w'as const,x:b.minX,y:cy}]:[]),{handle:'nw',x:b.minX,y:b.minY},{handle:'ne',x:b.maxX,y:b.minY},{handle:'se',x:b.maxX,y:b.maxY},{handle:'sw',x:b.minX,y:b.maxY}];}
 export function resizeSelection(elements:SceneElement[],ids:Set<string>,target:Bounds):SceneElement[]{
  ids=new Set(elements.filter(e=>ids.has(e.id)&&!e.locked).map(e=>e.id));const source=selectionBounds(elements,ids);if(!source)return elements;const sx=(target.maxX-target.minX)/Math.max(1e-6,source.maxX-source.minX),sy=(target.maxY-target.minY)/Math.max(1e-6,source.maxY-source.minY);
  const next=elements.map(e=>!ids.has(e.id)?e:{...e,x:target.minX+(e.x-source.minX)*sx,y:target.minY+(e.y-source.minY)*sy,width:e.width*sx,height:e.height*sy,points:e.points?.map(([x,y])=>[target.minX+(x-source.minX)*sx,target.minY+(y-source.minY)*sy]as[number,number])});return refreshBindings(elements,next);
