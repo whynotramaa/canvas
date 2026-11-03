@@ -7,7 +7,7 @@ bun install
 bun run dev
 ```
 
-Open `http://localhost:3000`. Use the workspace button to create folders and drawings. Press Alt+Z for zen mode: only the canvas, driven from the keyboard (Ctrl+K or Cmd+K still opens the command palette). Open the command palette with Ctrl+K or Cmd+K.
+Open `http://localhost:3000`. Use the workspace button to create folders and drawings. Press Alt+Z for zen mode: only the canvas, driven from the keyboard. Open the command palette with Ctrl+/ or Cmd+/.
 
 Run the checks before making changes:
 
@@ -47,7 +47,7 @@ The app runs on Vercel. Live collaboration runs on a Cloudflare Worker. Both fre
 
 ## Insert technology and system-design icons
 
-Press `/` to open the icon library. Search by name, alias, or concept, then select an icon to insert it. Hand-drawn rendering is the default. Change to monochrome or original colours in the library or element properties.
+Press Ctrl+K or Cmd+K, or choose **Library** in the toolbar, to open the icon library. Search by name, alias, or concept, then select an icon to insert it. Hand-drawn rendering is the default. Change to monochrome or original colours in the library or element properties.
 
 Choose **Download for offline** while online to cache the catalogue. Inserted icons carry their artwork inside the drawing and do not need the catalogue to reopen.
 

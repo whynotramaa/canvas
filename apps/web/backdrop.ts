@@ -1,6 +1,6 @@
 import {defaultSettings,type CanvasSettings}from'../../packages/engine/navigation';
 export function drawBackdrop(ctx:CanvasRenderingContext2D,width:number,height:number,view:{x:number;y:number;zoom:number},dark:boolean,settings:CanvasSettings=defaultSettings){
- const kind=settings.backdrop;ctx.save();ctx.fillStyle=kind==='blueprint'?'#16416a':kind==='chalkboard'?'#243d32':kind==='kraft'?(dark?'#40362b':'#d7bc8e'):kind==='warm'?(dark?'#302c27':'#fbf4e8'):dark?'#19191d':'#fafaf9';ctx.fillRect(0,0,width,height);
+ const kind=settings.backdrop;ctx.save();ctx.fillStyle=kind==='blueprint'?'#16416a':kind==='chalkboard'?'#243d32':kind==='kraft'?(dark?'#40362b':'#d7bc8e'):kind==='warm'?(dark?'#302c27':'#fbf4e8'):dark?'#181816':'#fdfcf9';ctx.fillRect(0,0,width,height);
  ctx.globalAlpha=settings.opacity;ctx.strokeStyle=ctx.fillStyle=kind==='blueprint'||kind==='chalkboard'?'#ffffff':dark?'#dedee8':'#555563';ctx.lineWidth=1;
  let step=settings.gridSize*view.zoom;while(step<12)step*=5;while(step>200)step/=5;
  const ox=((view.x%step)+step)%step,oy=((view.y%step)+step)%step;

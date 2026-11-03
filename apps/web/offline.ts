@@ -1,9 +1,9 @@
 export const manifest = {
   name: 'Canvas', short_name: 'Canvas', description: 'A local-first drawing workspace',
-  start_url: '/', display: 'standalone', background_color: '#fafaf9', theme_color: '#fafaf9',
+  start_url: '/', display: 'standalone', background_color: '#f6f4ee', theme_color: '#f6f4ee',
   icons: [{ src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' }],
 };
-export const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect width="192" height="192" rx="40" fill="#6558d3"/><path d="M130 60a48 48 0 1 0 0 72" fill="none" stroke="white" stroke-width="18" stroke-linecap="round"/></svg>`;
+export const icon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#f6f4ee"/><rect x="1" y="1" width="62" height="62" rx="13" fill="none" stroke="#1f1e1b" stroke-width="2"/><path d="M14 43c6-1 9-9 14-16s11-11 15-8-1 11-7 15-9 5-8 8 9 0 14-4 6-2 6 1" fill="none" stroke="#1f1e1b" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="48" cy="18" r="6" fill="#f2b4ab" stroke="#1f1e1b" stroke-width="2"/></svg>`;
 export const serviceWorker = String.raw`
 const CACHE = 'canvas-shell-v3';
 self.addEventListener('install', event => event.waitUntil((async () => {
