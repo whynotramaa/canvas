@@ -92,8 +92,9 @@ footer { position: absolute; bottom: 14px; left: 14px; right: 14px; display: fle
 .properties .row { display: flex; gap: 6px; }
 .properties .row select { flex: 1; min-width: 0; padding: 5px; }
 
-.text-editor { position: absolute; z-index: 1; margin: 0; padding: 0; border: 0 !important; border-radius: 0 !important; outline: none !important; background: transparent !important; resize: none; overflow: hidden; white-space: pre-wrap; overflow-wrap: break-word; min-height: 1em; caret-color: var(--ink); }
-.text-editor[wrap=off] { white-space: pre; }
+.app .text-editor { position: absolute; z-index: 1; margin: 0; padding: 0 0 3px; border: 0; border-bottom: 1.5px solid color-mix(in srgb, var(--ink) 35%, transparent); border-radius: 0; outline: none; background: transparent; resize: none; overflow: hidden; white-space: pre-wrap; overflow-wrap: break-word; min-height: 1em; caret-color: var(--ink); box-sizing: content-box; }
+.app .text-editor:focus-visible { outline: none; border-color: color-mix(in srgb, var(--ink) 35%, transparent); }
+.app .text-editor[wrap=off] { white-space: pre; }
 
 .overlay { position: absolute; inset: 0; z-index: 5; background: #1f1e1b2e; display: flex; justify-content: center; align-items: flex-start; padding-top: 14vh; animation: fade .2s var(--ease); }
 .app.dark .overlay { background: #0008; }
