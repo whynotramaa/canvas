@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-11-03T04:00:18.222Z",
+  "host": {
+    "os": "linux 7.1.9-arch1-2",
+    "cpu": "12th Gen Intel(R) Core(TM) i5-12450H",
+    "logicalCpus": 12,
+    "memoryGiB": 15.32098388671875,
+    "runtime": "Bun 1.3.14"
+  },
+  "method": "Deterministic equal mix of rectangles, ellipses, diamonds, labels, bound arrows and four-sample pens. Cold Yjs scene creation and R-tree construction. Forty warm single-element edits including scene transaction, index maintenance, viewport query, hit test and delta-history comparison; performance.now wall clock. No canvas rasterization or browser event loop measured.",
+  "browser": null,
+  "displayScale": null,
+  "cache": "cold scene/index; warm edits",
+  "results": [
+    {
+      "size": 5000,
+      "openMs": 81.75528800000001,
+      "indexBuildMs": 10.899507999999997,
+      "editIndexHitHistoryMedianMs": 2.7783390000000168,
+      "editIndexHitHistoryP95Ms": 3.7308470000000113
+    },
+    {
+      "size": 10000,
+      "openMs": 136.373108,
+      "indexBuildMs": 16.899129000000016,
+      "editIndexHitHistoryMedianMs": 4.876616000000013,
+      "editIndexHitHistoryP95Ms": 6.896366
+    },
+    {
+      "size": 50000,
+      "openMs": 607.575863,
+      "indexBuildMs": 82.04426699999999,
+      "editIndexHitHistoryMedianMs": 32.71297299999992,
+      "editIndexHitHistoryP95Ms": 37.1601069999997
+    }
+  ]
+}

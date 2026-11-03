@@ -1,0 +1,3 @@
+import{expect,test}from'bun:test';
+import{validateEmbeddedFonts,embeddedFontCss}from'./fonts';
+test('embedded font CSS accepts WOFF2 data and rejects markup or external font references',async()=>{const bytes=new Uint8Array(await Bun.file(new URL('../fonts/dm-sans/dm-sans-latin-400-normal.woff2',import.meta.url)).arrayBuffer());let binary='';for(const byte of bytes)binary+=String.fromCharCode(byte);const font={family:'DM Sans',weight:'400',data:btoa(binary),unicodeRange:'U+20-7E'};expect(validateEmbeddedFonts([font])).toEqual([font]);expect(embeddedFontCss([font])).toContain('data:font/woff2;base64,');expect(()=>embeddedFontCss([{...font,family:'</style><script>'}])).toThrow();expect(()=>embeddedFontCss([{...font,data:'https://evil.invalid/font'}])).toThrow();});

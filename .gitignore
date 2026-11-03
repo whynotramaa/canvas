@@ -1,0 +1,8 @@
+node_modules/
+dist/
+public/
+data/
+.wrangler/
+.vercel
+.env*
+*.log

@@ -1,0 +1,4 @@
+import{expect,test}from'bun:test';
+import{frameContext}from'./frames';
+import{benchmarkScene}from'./benchmark-fixtures';
+test('frame context follows nested clips, hidden parents and badges without looping on invalid references',()=>{const base=benchmarkScene(1)[0]!,outer={...base,id:'outer',type:'frame' as const},inner={...base,id:'inner',type:'frame' as const,frameId:'outer'},child={...base,id:'child',frameId:'inner'},map=new Map([outer,inner,child].map(e=>[e.id,e]));expect(frameContext(map,child).clips.map(e=>e.id)).toEqual(['inner','outer']);expect(frameContext(map,{...child,badge:true}).clips.map(e=>e.id)).toEqual(['outer']);map.set('outer',{...outer,hidden:true});expect(frameContext(map,child).hidden).toBe(true);map.set('outer',{...outer,frameId:'inner',clip:false});expect(frameContext(map,child).clips.map(e=>e.id)).toEqual(['inner']);});

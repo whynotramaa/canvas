@@ -1,0 +1,22 @@
+import { mkdir, rm, writeFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
+import { fontFiles } from '../packages/fonts/font-assets';
+import { fontResponse } from '../apps/server/fonts';
+import { fontToolResponse } from '../apps/server/font-tools';
+import { catalogFile, indexFile, chunks } from '../packages/icons/assets';
+import { icon, manifest, serviceWorker } from '../apps/web/offline';
+const out = 'public';
+await rm(out, { recursive: true, force: true });
+const build = await Bun.build({ entrypoints: ['apps/web/index.html'], outdir: out, minify: true, splitting: true, target: 'browser', define: { 'process.env.NODE_ENV': '"production"' } });
+if (!build.success) { for (const log of build.logs) console.error(log); process.exit(1); }
+const write = async (path: string, body: Response | string | Blob) => { await mkdir(dirname(`${out}/${path}`), { recursive: true }); await writeFile(`${out}/${path}`, typeof body === 'string' ? body : new Uint8Array(await body.arrayBuffer())); };
+await write('fonts/index.json', fontResponse('index.json'));
+for (const name of Object.keys(fontFiles)) await write(`fonts/${name}.woff2`, fontResponse(`${name}.woff2`));
+for (const name of ['subset.worker.js', 'harfbuzz.js', 'woff2-compress.js', 'woff2-decompress.js', 'subset.wasm']) await write(`font-tools/${name}`, fontToolResponse(name));
+await write('icons/catalog.json', Bun.file(catalogFile));
+await write('icons/index.json', Bun.file(indexFile));
+for (const [name, path] of Object.entries(chunks)) await write(`icons/chunks/${name}.json`, Bun.file(path));
+await write('manifest.webmanifest', JSON.stringify(manifest));
+await write('icon.svg', icon);
+await write('sw.js', serviceWorker);
+console.log('Static app written to public/');

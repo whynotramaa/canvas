@@ -1,0 +1,4 @@
+import{expect,test}from'bun:test';
+import{compress,decompress}from'wawoff2';
+import{subsetFont}from'./subset-core';
+test('font export engine creates a smaller independently decodable WOFF2 subset',async()=>{const factory=(await import(new URL('../../node_modules/harfbuzzjs/dist/harfbuzz.js',import.meta.url).href)).default,wasmBinary=await Bun.file(new URL('../../node_modules/harfbuzzjs/dist/harfbuzz-subset.wasm',import.meta.url)).arrayBuffer(),hb=await factory({wasmBinary}),woff=new Uint8Array(await Bun.file(new URL('./dm-sans/dm-sans-latin-400-normal.woff2',import.meta.url)).arrayBuffer()),original=await decompress(woff),subset=subsetFont(hb,original,'Canvas'),encoded=await compress(subset);expect(subset.length).toBeLessThan(original.length);expect(new TextDecoder().decode(encoded.slice(0,4))).toBe('wOF2');expect((await decompress(encoded)).length).toBe(subset.length);});

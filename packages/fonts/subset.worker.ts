@@ -1,0 +1,8 @@
+/// <reference lib="webworker" />
+import{subsetFont}from'./subset-core';
+interface RequestMessage{id:string;font:ArrayBuffer;text:string}
+const worker=self as unknown as DedicatedWorkerGlobalScope;
+let runtime:Promise<{hb:any;compress:any;decompress:any}>|undefined;
+async function initialize(){return runtime||=(async()=>{const hbUrl='/font-tools/harfbuzz.js',compressUrl='/font-tools/woff2-compress.js',decompressUrl='/font-tools/woff2-decompress.js';const[driver,compress,decompress,response]=await Promise.all([import(hbUrl),import(compressUrl),import(decompressUrl),fetch('/font-tools/subset.wasm')]);if(!response.ok)throw new Error('Font subset engine unavailable offline');return{hb:await driver.default({wasmBinary:await response.arrayBuffer()}),compress:await compress.default,decompress:await decompress.default};})();}
+let queue=Promise.resolve();
+worker.onmessage=event=>{const request=event.data as RequestMessage;queue=queue.then(async()=>{try{if(!request||typeof request.id!=='string'||!(request.font instanceof ArrayBuffer)||request.font.byteLength>20*1024*1024||typeof request.text!=='string'||request.text.length>100000)throw new Error('Invalid font subset request');const{hb,compress,decompress}=await initialize(),ttf=decompress.decompress(new Uint8Array(request.font));if(ttf===false)throw new Error('Could not decode WOFF2');const bytes=subsetFont(hb,ttf,request.text),encoded=compress.compress(bytes);if(encoded===false)throw new Error('Could not encode subset WOFF2');const result=new Uint8Array(encoded).slice();worker.postMessage({id:request.id,font:result.buffer},[result.buffer]);}catch(error){worker.postMessage({id:request?.id,error:error instanceof Error?error.message:String(error)});}});};

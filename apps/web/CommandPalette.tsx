@@ -1,0 +1,11 @@
+import{useEffect,useRef,useState}from'react';
+import type{ActionRegistry}from'../../packages/shortcuts';
+import type{Keymap}from'../../packages/shortcuts/keymap';
+export function CommandPalette({registry,keymap,close}:{registry:ActionRegistry;keymap:Keymap;close:()=>void}){
+ const[query,setQuery]=useState(''),[active,setActive]=useState(0),input=useRef<HTMLInputElement>(null),previous=useRef<Element|null>(null);
+ useEffect(()=>{previous.current=document.activeElement;const field=input.current;field?.focus();return()=>{if((document.activeElement===document.body||document.activeElement===field)&&previous.current instanceof HTMLElement&&previous.current.isConnected)previous.current.focus();};},[]);
+ const results=registry.search(query),index=Math.min(active,Math.max(0,results.length-1));
+ useEffect(()=>{document.getElementById(`command-option-${index}`)?.scrollIntoView({block:'nearest'});},[index,query]);
+ const run=(id:string)=>{const action=results.find(item=>item.id===id);close();action?.run();};
+ return <div className="overlay" onMouseDown={close}><section className="palette" role="dialog" aria-modal="true" aria-label="Command palette" onMouseDown={e=>e.stopPropagation()}><input ref={input} role="combobox" aria-label="Search commands" aria-expanded="true" aria-controls="command-results" aria-autocomplete="list" aria-activedescendant={results.length?`command-option-${index}`:undefined} placeholder="Search commands…" value={query} onChange={e=>{setQuery(e.target.value);setActive(0);}} onKeyDown={e=>{if(['ArrowDown','ArrowUp','Home','End'].includes(e.key)){e.preventDefault();setActive(e.key==='Home'?0:e.key==='End'?results.length-1:Math.max(0,Math.min(results.length-1,index+(e.key==='ArrowDown'?1:-1))));}if(e.key==='Escape'){e.preventDefault();e.stopPropagation();close();}if(e.key==='Enter'&&results[index]){e.preventDefault();run(results[index]!.id);}}}/><div id="command-results" role="listbox" aria-label="Commands">{results.map((action,i)=><button role="option" aria-selected={i===index} id={`command-option-${i}`} tabIndex={-1} key={action.id} onMouseMove={()=>setActive(i)} onClick={()=>run(action.id)}><span>{action.label}</span><kbd>{keymap[action.id]??(action.binding||action.category)}</kbd></button>)}</div>{!results.length&&<p role="status">No matching commands.</p>}<button onClick={close}>Close</button></section></div>;
+}

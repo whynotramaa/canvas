@@ -1,0 +1,6 @@
+export interface SubsetRuntime{HEAPU8:Uint8Array;wasmExports:Record<string,(...args:number[])=>number>}
+export function subsetFont(hb:SubsetRuntime,ttf:Uint8Array,text:string):Uint8Array{
+ const api=hb.wasmExports,ptr=api.malloc(ttf.length);if(!ptr)throw new Error('Font subset memory allocation failed');hb.HEAPU8.set(ttf,ptr);let blob=0,face=0,input=0,subset=0,output=0;
+ try{blob=api.hb_blob_create(ptr,ttf.length,0,0,0);api.free(ptr);if(!blob)throw new Error('Could not read font data');face=api.hb_face_create(blob,0);input=api.hb_subset_input_create_or_fail();if(!input)throw new Error('Could not allocate font subset');const set=api.hb_subset_input_unicode_set(input);api.hb_set_clear(set);for(const char of text)api.hb_set_add(set,char.codePointAt(0)!);subset=api.hb_subset_or_fail(face,input);if(!subset)throw new Error('Font glyph subsetting failed');output=api.hb_face_reference_blob(subset);const length=api.hb_blob_get_length(output);if(!length)throw new Error('Font subset is empty');return new Uint8Array(hb.HEAPU8.buffer,api.hb_blob_get_data(output,0),length).slice();}
+ finally{if(output)api.hb_blob_destroy(output);if(subset)api.hb_face_destroy(subset);if(input)api.hb_subset_input_destroy(input);if(face)api.hb_face_destroy(face);if(blob)api.hb_blob_destroy(blob);}
+}

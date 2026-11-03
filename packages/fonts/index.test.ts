@@ -1,0 +1,4 @@
+import{expect,test}from'bun:test';
+import{fontFamilies,fallbackFamilies}from'./index';
+import faces from'./faces.json';
+test('all requested typefaces and script fallback packs have self-hosted subset metadata',()=>{for(const family of ['Excalifont','Virgil','Caveat','Kalam','Patrick Hand','Architects Daughter','Gochi Hand','Inter','Geist','Nunito','Manrope','IBM Plex Sans','Source Serif 4','Fraunces','Lora','Geist Mono','JetBrains Mono','Comic Shanns Mono','IBM Plex Mono','Lilita One','Bricolage Grotesque']){expect(fontFamilies).toContain(family);expect(faces.some(face=>face.family===family)).toBe(true);}expect(fallbackFamilies('你好 日本語 한글 مرحبا नमस्ते 😀')).toEqual(['Noto Sans SC','Noto Sans KR','Noto Sans Arabic','Noto Sans Devanagari','Noto Color Emoji']);expect(fallbackFamilies('かなカナ')).toEqual(['Noto Sans JP']);expect(fallbackFamilies('Latin')).toEqual([]);});

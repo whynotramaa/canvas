@@ -1,0 +1,81 @@
+import type{ComponentInstance}from'../workspace/components';
+import type{Arrowhead}from'./arrowheads';
+import type { IconArtwork, IconMode } from '../icons/types';
+export const SCENE_VERSION = 1 as const;
+
+import type { LibraryShape } from './shapes';
+export type ElementType = LibraryShape | 'sticky' | 'table' | 'code' | 'embed' | 'icon' | 'math' | 'rectangle' | 'diamond' | 'ellipse' | 'arrow' | 'line' | 'pen' | 'text' | 'image' | 'frame';
+export interface SceneElement {
+  component?:ComponentInstance;
+  arrowStyle?:'straight'|'curved'|'elbow';
+  pinned?:boolean;
+  latex?:string;
+  startArrowhead?:Arrowhead;
+  endArrowhead?:Arrowhead;
+  startAnchor?:[number,number];
+  endAnchor?:[number,number];
+  flipX?:boolean;
+  flipY?:boolean;
+  fontFamily?:string;
+  fontSize?:number;
+  bold?:boolean;
+  italic?:boolean;
+  underline?:boolean;
+  strike?:boolean;
+  textAlign?:'left'|'center'|'right';
+  lineHeight?:number;
+  letterSpacing?:number;
+  verticalAlign?:'top'|'middle'|'bottom';
+  listStyle?:'none'|'bullet'|'number';
+  textLink?:string;
+  cells?:string[][];
+  language?:string;
+  url?:string;
+  link?: {drawingId:string;elementId?:string};
+  icon?: IconArtwork;
+  iconMode?: IconMode;
+  notes?: string;
+  text?: string;
+  points?: [number, number][];
+  closed?:boolean;
+  pressures?:number[];
+  smoothing?:number;
+  fillStyle?:'none'|'hachure'|'cross-hatch'|'solid'|'zigzag'|'dots';
+  strokeStyle?:'solid'|'dashed'|'dotted';
+  roughness?:number;
+  edgeStyle?:'sharp'|'round';
+  cornerRadius?:number;
+  clean?:boolean;
+  shadow?:boolean;
+  container?:boolean;
+  autoSize?:boolean;
+  badge?:boolean;
+  clip?:boolean;
+  gradient?:{start:string;end:string};
+  color?: string;
+  fill?: string;
+  strokeWidth?: number;
+  opacity?: number;
+  locked?: boolean;
+  hidden?: boolean;
+  id: string;
+  type: ElementType;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  rotation: number;
+  groupIds: string[];
+  frameId: string | null;
+  assetId: string | null;
+  startBinding: string | null;
+  endBinding: string | null;
+}
+export interface Scene {
+  version: typeof SCENE_VERSION;
+  id: string;
+  elements: SceneElement[];
+}
+export function createScene(): Scene {
+  return { version: SCENE_VERSION, id: crypto.randomUUID(), elements: [] };
+}
